@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Management Cost Calculator</h1>
+
+<form id="management-form">
+    <label for="single-circuit-line">Overhead Medium Voltage Single-Circuit Line (km):</label>
+    <input type="number" id="single-circuit-line" placeholder="Enter km">
+
+    <label for="double-circuit-line">Overhead Medium Voltage Double-Circuit Line (km):</label>
+    <input type="number" id="double-circuit-line" placeholder="Enter km">
+
+    <label for="three-phase-line">Overhead Medium Voltage 3-Phase Line (km):</label>
+    <input type="number" id="three-phase-line" placeholder="Enter km">
+
+    <label for="underground-line">Underground Medium Voltage Line (km):</label>
+    <input type="number" id="underground-line" placeholder="Enter km">
+
+    <label for="transformer-250kva">3-Phase Transformer ≤ 250KVA (stations):</label>
+    <input type="number" id="transformer-250kva" placeholder="Enter number of stations">
+
+    <label for="transformer-1000kva">3-Phase Transformer > 250KVA ≤ 1000KVA (stations):</label>
+    <input type="number" id="transformer-1000kva" placeholder="Enter number of stations">
+
+    <label for="transformer-over-1000kva">Transformer > 1000KVA (stations):</label>
+    <input type="number" id="transformer-over-1000kva" placeholder="Enter number of stations">
+
+    <label for="single-phase-1-machine">Single-Phase Transformer with 01 Machine (stations):</label>
+    <input type="number" id="single-phase-1-machine" placeholder="Enter number of stations">
+
+    <label for="single-phase-2-machines">Single-Phase Transformer with 02 Machines (stations):</label>
+    <input type="number" id="single-phase-2-machines" placeholder="Enter number of stations">
+
+    <label for="capacitor">Low Voltage Capacitor (sets):</label>
+    <input type="number" id="capacitor" placeholder="Enter number of sets">
+
+    <label for="recloser">Recloser (sets):</label>
+    <input type="number" id="recloser" placeholder="Enter number of sets">
+
+    <label for="lbs">LBS (Load Break Switch) (sets):</label>
+    <input type="number" id="lbs" placeholder="Enter number of sets">
+
+    <label for="rmu">RMU (sets):</label>
+    <input type="number" id="rmu" placeholder="Enter number of sets">
+
+    <label for="fco">FCO (sets):</label>
+    <input type="number" id="fco" placeholder="Enter number of sets">
+
+    <label for="la">LA (sets):</label>
+    <input type="number" id="la" placeholder="Enter number of sets">
+
+    <label for="ds-ltd">DS/LTD 1-Phase (sets):</label>
+    <input type="number" id="ds-ltd" placeholder="Enter number of sets">
+
+    <button type="button" onclick="calculateCost()">Calculate Management Cost</button>
+</form>
+
+<div class="result" id="result"></div>
+
+<script>
+    const VAT = 0.08;
+
+    // Unit prices in VND
+    const prices = {
+        singleCircuitLine: 2796243,
+        doubleCircuitLine: 3075867,
+        threePhaseLine: 3383454,
+        undergroundLine: 838873,
+        transformer250KVA: 3072794,
+        transformer1000KVA: 3840993,
+        transformerOver1000KVA: 4609191,
+        singlePhase1Machine: 1728447,
+        singlePhase2Machines: 2304596,
+        capacitor: 230460,
+        recloser: 921838,
+        lbs: 921838,
+        rmu: 921838,
+        fco: 230460,
+        la: 76820,
+        dsLtd: 96025
+    };
+
+    // Function to calculate the management cost
+    function calculateCost() {
+        const singleCircuitLine = document.getElementById('single-circuit-line').value || 0;
+        const doubleCircuitLine = document.getElementById('double-circuit-line').value || 0;
+        const threePhaseLine = document.getElementById('three-phase-line').value || 0;
+        const undergroundLine = document.getElementById('underground-line').value || 0;
+        const transformer250KVA = document.getElementById('transformer-250kva').value || 0;
+        const transformer1000KVA = document.getElementById('transformer-1000kva').value || 0;
+        const transformerOver1000KVA = document.getElementById('transformer-over-1000kva').value || 0;
+        const singlePhase1Machine = document.getElementById('single-phase-1-machine').value || 0;
+        const singlePhase2Machines = document.getElementById('single-phase-2-machines').value || 0;
+        const capacitor = document.getElementById('capacitor').value || 0;
+        const recloser = document.getElementById('recloser').value || 0;
+        const lbs = document.getElementById('lbs').value || 0;
+        const rmu = document.getElementById('rmu').value || 0;
+        const fco = document.getElementById('fco').value || 0;
+        const la = document.getElementById('la').value || 0;
+        const dsLtd = document.getElementById('ds-ltd').value || 0;
+
+        // Calculate total cost based on input values and unit prices
+        let totalCost = 
+            singleCircuitLine * prices.singleCircuitLine + 
+            doubleCircuitLine * prices.doubleCircuitLine + 
+            threePhaseLine * prices.threePhaseLine + 
+            undergroundLine * prices.undergroundLine +
+            transformer250KVA * prices.transformer250KVA +
+            transformer1000KVA * prices.transformer1000KVA +
+            transformerOver1000KVA * prices.transformerOver1000KVA +
+            singlePhase1Machine * prices.singlePhase1Machine +
+            singlePhase2Machines * prices.singlePhase2Machines +
+            capacitor * prices.capacitor +
+            recloser * prices.recloser +
+            lbs * prices.lbs +
+            rmu * prices.rmu +
+            fco * prices.fco +
+            la * prices.la +
+            dsLtd * prices.dsLtd;
+
+        const vatCost = totalCost * VAT;
+        const totalWithVAT = totalCost + vatCost;
+
+        document.getElementById('result').innerHTML = `<h3>Total Cost: ${totalCost.toLocaleString('vi-VN')} VND</h3>
+                                                       <h4>VAT (8%): ${vatCost.toLocaleString('vi-VN')} VND</h4>
+                                                       <h3>Total with VAT: ${totalWithVAT.toLocaleString('vi-VN')} VND</h3>`;
+    }
+</script>
+
+</body>
+</html>
